@@ -29,6 +29,7 @@
 
 Mouse_ Mouse;
 Keyboard_ Keyboard;
+Suit_ Suit;
 
 //================================================================================
 //================================================================================
@@ -126,6 +127,18 @@ const u8 _hidReportDescriptor[] = {
 	0x91, 0x02,				// Output (array)
 	0xC0					// end collection
 #endif
+
+	//-----------------------------------------------------------------------------
+
+    /* Cross-platform support for controls found on IR Remotes */
+
+    0x05, 0x03,                     //	Usage Page (VR Controls)
+    0x09, 0x02,                     //	Usage (Body Suit)
+    0xa1, 0x01,                     //	Collection (Application)
+    0x85, 0x04,                     //	REPORT_ID (4)
+    0x75, 0x40,						//	REPORT_SIZE (64)
+    0x95, 0x01,						//	REPORT_COUNT (1)
+    0xc0                            //	End Collection
 };
 
 extern const HIDDescriptor _hidInterface PROGMEM;
@@ -513,6 +526,28 @@ size_t Keyboard_::write(uint8_t c)
 	uint8_t p = press(c);		// Keydown
 	uint8_t r = release(c);		// Keyup
 	return (p);					// just return the result of press() since release() almost always returns 1
+}
+
+
+//================================================================================
+//================================================================================
+//	Suit
+ 
+Suit_::Suit_(void)
+{
+}
+ 
+void Suit_::begin(void) 
+{
+}
+ 
+void Suit_::end(void) 
+{
+}
+ 
+void Suit_::sendReport(uint8_t* values)
+{
+	HID_SendReport(4,values,64);
 }
 
 #endif
